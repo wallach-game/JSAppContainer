@@ -1,11 +1,17 @@
 'use strict';
-import { Window } from "./CoreObjects/Window.js"
+import CWindow from './CoreObjects/CWindow.js';
 
 console.log('Core Loaded');
 
-windowObjectTest = new Window();
-console.log(windowObjectTest);
+CWindow.MainWindow = window;
+
+var win = new CWindow("1",true,"");
+win.CloseWindow();
 
 
+//comment this out when u dont wanna new windows after saving
 window.close();
-window.close();
+
+
+
+
