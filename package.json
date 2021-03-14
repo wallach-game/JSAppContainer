@@ -17,6 +17,7 @@
   "homepage": "https://github.com/wallach-game/JSAppContainer#readme",
   "description": "",
   "dependencies": {
-    "@jirklym/lleact": "0.0.1"
+    "@jirklym/lleact": "0.0.1",
+    "live-server": "^1.2.1"
   }
 }
