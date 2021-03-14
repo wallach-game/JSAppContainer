@@ -1,3 +1,3 @@
 # JSAppContainer
 
-<img alt="npm (scoped)" src="https://img.shields.io/npm/v/@jirklym/jsappcontainer?label=npm%20version&style=plastic">
+<a href="https://badge.fury.io/js/%40jirklym%2Fjs-app-container"><img src="https://badge.fury.io/js/%40jirklym%2Fjs-app-container.svg" alt="npm version" height="18"></a>
