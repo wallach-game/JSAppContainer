@@ -1,5 +1,5 @@
 {
-  "name": "@jirklym/jsappcontainer",
+  "name": "@jirklym/js-app-container",
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/wallach-game/JSAppContainer.git"
   },
-  "author": "",
+  "author": "Jiri Korenek",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/wallach-game/JSAppContainer/issues"
