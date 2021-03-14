@@ -13,3 +13,7 @@ window.open('./App/HTML/main_container.html','_blank',params);
 //Close loader
 window.close();
 window.close();
+
+//chrome only
+var customWindow = window.open('', '_blank', '');
+    customWindow.close();

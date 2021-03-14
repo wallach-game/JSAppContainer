@@ -6,4 +6,6 @@ console.log('Core Loaded');
 windowObjectTest = new Window();
 console.log(windowObjectTest);
 
-//TODO: ReworkProject structure.
+
+window.close();
+window.close();
