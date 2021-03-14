@@ -1,9 +1,9 @@
-import * as Window from './CoreObjects/Window.js'
+'use strict';
+import { Window } from "./CoreObjects/Window"
 
 console.log('Core Loaded');
 
-
-const windowObjectTest = new Window();
+windowObjectTest = new Window();
 console.log(windowObjectTest);
 
 //TODO: ReworkProject structure.
