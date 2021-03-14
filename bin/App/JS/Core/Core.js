@@ -1,5 +1,5 @@
 'use strict';
-import { Window } from "./CoreObjects/Window"
+import { Window } from "./CoreObjects/Window.js"
 
 console.log('Core Loaded');
 
