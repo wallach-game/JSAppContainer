@@ -10,7 +10,7 @@
     "url": "git+https://github.com/wallach-game/JSAppContainer.git"
   },
   "author": "Jiri Korenek",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wallach-game/JSAppContainer/issues"
   },
