@@ -1,23 +1,12 @@
 {
-  "name": "@jirklym/js-app-container",
-  "version": "0.0.1",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wallach-game/JSAppContainer.git"
-  },
-  "author": "Jiri Korenek",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/wallach-game/JSAppContainer/issues"
-  },
-  "homepage": "https://github.com/wallach-game/JSAppContainer#readme",
+  "name": "jsappcontainer",
+  "version": "0.0.0",
   "description": "",
-  "dependencies": {
-    "@jirklym/lleact": "0.0.1",
-    "live-server": "^1.2.1"
-  }
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }
