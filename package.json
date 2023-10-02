@@ -3,10 +3,15 @@
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "start ./QtWeb/QtWeb.exe http://localhost:8080 & node dev.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@material/web": "^1.0.0",
+    "http-server": "^14.1.1",
+    "live-server": "^1.1.0"
+  }
 }
