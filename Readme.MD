@@ -4,9 +4,9 @@
 ![Static Badge](https://img.shields.io/badge/_version_-_0.2.0-green)
 
 
-## what is 2023rework?
+## what is 2023 rework?
 
-2023rework is mainly focused on windows platform and small buildsize. app now works as completely standalone without any browser.
+2023 rework is mainly focused on windows platform and small buildsize. Apps now works as completely standalone without any installed browser on host.
 
 |Feature|State |
 |-------|------|
