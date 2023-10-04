@@ -16,8 +16,9 @@
 
 |Feature               |State |
 |----------------------|------|
-|Google material design|⚠️    |
-|Google material icons |
-⚠️    |
+|Google material design|⚠️   |
+|Google material icons|
+⚠️   |
+|Build pipeline       |❌️p|
 
-*✅️ - done⚠️ - wip❌️p - planed*
+*✅️ - done ⚠️ - wip ❌️p - planed*
