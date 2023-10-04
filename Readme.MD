@@ -21,4 +21,4 @@
 ⚠️   |
 |Build pipeline       |❌️p|
 
-*✅️ - done ⚠️ - wip ❌️p - planed*
+*✅️ - done ⚠️ - wip ❌️p - planned*
