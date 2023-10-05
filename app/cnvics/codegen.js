@@ -15,10 +15,11 @@ var max = 0;
 
 function parseInput(icons)
 {
-    let arr = icons.split("\n")
+    let arr = icons.split("\n");
     max = arr.length;
     for (let i = 0; i < arr.length; i++) {
-        const element = arr[i];
+        let element = arr[i];
+        element = element.slice(0,-1);
         let filename = path.basename(element);
         fs.readFile(element, 'utf8', (err, data) => {
             if (err) {
@@ -32,8 +33,8 @@ function parseInput(icons)
 
 function appendCode(string, filename)
 {
-
- 
+filename = filename.slice(0,-4);
+filename = filename.replaceAll("_"," ");
 // String to be added
 let stringToAdd = `class="icon ${filename}"`;
  
@@ -48,6 +49,7 @@ newString = string.slice(0, indexPosition)
 
     xml = xml.concat(newString);
     counter++;
+    console.log(max);
     if(max==counter)
     {
         FileCnv();
@@ -60,8 +62,7 @@ function FileCnv() {
     fs.appendFile("./code.html", xml, function (err) {
         
         if (err) throw err;
-        // console.log('Saved!');
-        console.log(xml);
+        console.log('Saved!');
     });
 }
 
