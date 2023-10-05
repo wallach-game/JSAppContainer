@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    width='512'
+    heigth='512'
+    viewport='0 0 512 512'
+    
+    
+    android:autoMirrored="true">
+  <path
+      fill="currentColor"
+      d="M5,4h10v1h-10z"/>
+  <path
+      fill="currentColor"
+      d="M5,15h4.5v1h-4.5z"/>
+  <path
+      fill="currentColor"
+      d="M5,12.25h4.5v1h-4.5z"/>
+  <path
+      fill="currentColor"
+      d="M5,6.75h10v1h-10z"/>
+  <path
+      fill="currentColor"
+      d="M5,9.5h10v1h-10z"/>
+  <path
+      fill="currentColor"
+      d="M12.17,14.59l-0.71,-0.71l-0.7,0.71l1.41,1.41l2.83,-2.83l-0.71,-0.71z"/>
+</svg>

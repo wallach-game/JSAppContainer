@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    width='512'
+    heigth='512'
+    viewport='0 0 512 512'
+    
+    
+    android:autoMirrored="true">
+  <path
+      fill="currentColor"
+      d="M10,6V3l7,7 -7,7v-3H3V6z"/>
+</svg>

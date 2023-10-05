@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    width='512'
+    heigth='512'
+    viewport='0 0 512 512'
+    
+    >
+  <path
+      fill="currentColor"
+      d="M10,5v5h2.75L11,13h2.25L15,10L15,5h-5zM3,10h2.75L4,13h2.25L8,10L8,5L3,5v5z"/>
+</svg>

@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@material/web": "^1.0.0",
+    "cheerio": "^1.0.0-rc.12",
     "http-server": "^14.1.1",
     "live-server": "^1.1.0"
   }
