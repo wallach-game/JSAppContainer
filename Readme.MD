@@ -1,8 +1,9 @@
 # JS app container 
 *because you can does not mean you should*
 
-![Static Badge](https://img.shields.io/badge/_version_-_0.2.0-green)
+![Static Badge](https://badgen.net/static/source%20version/0.3.0-a.0/green?&scale=1)
 
+*This version is for **alfa** testing*
 
 ## what is 2023 rework?
 
