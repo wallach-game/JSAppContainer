@@ -29,3 +29,6 @@
 |icons build  |⚠️ |
 |babel integration|❌️p|
 *✅️ - done ⚠️ - wip ❌️p - planned*
+
+accualy get together scripts for builing from google material design repo 
+cannot realy understant why the merge icons into one file thing is broken and is skipping icons
