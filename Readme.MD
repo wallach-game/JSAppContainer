@@ -14,6 +14,8 @@
 |windows| ⚠️   |
 |linux  | ❌️p  |
 |mac    | ❌️p  |
+|android| ❌️p  |
+|  iOS  | ❌️   |
 
 |Feature               |State |
 |----------------------|------|
@@ -22,4 +24,8 @@
 ⚠️   |
 |Build pipeline       |❌️p|
 
-*✅️ - done ⚠️ - wip ❌️p - planned*
+*✅️ - done ⚠️ - wip ❌️p - planned ❌️ not planned*
+
+
+Feature planning:
+I really wish i could make and android version because cordova sucks at leats for me, but waht i can know last time i used it t was 2019 lulw. but i can be achived somewhat in same way as the desktop version, and i will be definitely better, buz im 100% sure that mobile browser would not be the same piece of shit as the Qtbrowser on desktop. definitely i want to have source code work on mobile and android at same time. iOS support is not planned now 
