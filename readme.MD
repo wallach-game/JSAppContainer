@@ -30,7 +30,12 @@
 |babel integration|❌️p|
 *✅️ - done ⚠️ - wip ❌️p - planned*
 
+<<<<<<< HEAD
 TODO stuff:
 Load 100% of icons, curently 33% only 
 - write new node combination script codegen.js
 Rewrite into node module
+=======
+accualy get together scripts for builing from google material design repo 
+cannot realy understant why the merge icons into one file thing is broken and is skipping icons
+>>>>>>> 3b1a9e19c8cf9fde1d5a9accd242332172ff50e2

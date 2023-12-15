@@ -1,4 +1,5 @@
 TODO create build script []
+FIXME google changed how the completely repo
 TODO load icons from google repo [] 
 TODO convert icons to svg format []
 TODO add class names []
