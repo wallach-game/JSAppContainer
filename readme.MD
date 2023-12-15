@@ -29,3 +29,8 @@
 |icons build  |⚠️ |
 |babel integration|❌️p|
 *✅️ - done ⚠️ - wip ❌️p - planned*
+
+TODO stuff:
+Load 100% of icons, curently 33% only 
+- write new node combination script codegen.js
+Rewrite into node module

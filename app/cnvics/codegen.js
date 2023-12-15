@@ -31,6 +31,9 @@ function parseInput(icons)
     }
 }
 
+
+//TODO Move this code3 to work eith separate files
+//FIXME and make scrap the other code, merge edited files in bash (or fix that is jump over 1/3 of ther files)
 function appendCode(string, filename)
 {
 filename = filename.slice(0,-4);
