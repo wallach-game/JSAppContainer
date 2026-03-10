@@ -86,9 +86,19 @@ export function buildRendererHtml(jscadCode: string, height: number): string {
 	<button onclick="toggleAutoRotate()">Auto-Rotate</button>
 </div>
 
-<script type="text/javascript">
-// Minimal inline JSCAD modeling subset + Three.js rendering
-// This avoids heavy CDN dependencies and works offline on mobile
+<script type="importmap">
+{
+	"imports": {
+		"three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+		"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+	}
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+window.THREE = THREE;
+window.THREE.OrbitControls = OrbitControls;
 
 var statusEl = document.getElementById('status');
 var errorEl = document.getElementById('error');
@@ -100,7 +110,7 @@ function showError(msg) {
 	statusEl.style.display = 'none';
 }
 
-// Load Three.js from CDN
+// Load script from CDN
 function loadScript(url) {
 	return new Promise(function(resolve, reject) {
 		var s = document.createElement('script');
@@ -113,10 +123,6 @@ function loadScript(url) {
 
 async function init() {
 	try {
-		statusEl.textContent = 'Loading Three.js...';
-		await loadScript('https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js');
-		await loadScript('https://cdn.jsdelivr.net/npm/three@0.149.0/examples/js/controls/OrbitControls.js');
-
 		statusEl.textContent = 'Loading JSCAD...';
 		await loadScript('https://cdn.jsdelivr.net/npm/@jscad/modeling@2.12.2/dist/jscad-modeling.min.js');
 
@@ -372,25 +378,25 @@ function render3D(vertices, normals) {
 	});
 }
 
-function resetCamera() {
+window.resetCamera = function() {
 	if (controls) {
 		controls.reset();
 	}
-}
+};
 
-function toggleWireframe() {
+window.toggleWireframe = function() {
 	if (mainMesh) {
 		wireframeMode = !wireframeMode;
 		mainMesh.material.wireframe = wireframeMode;
 	}
-}
+};
 
-function toggleAutoRotate() {
+window.toggleAutoRotate = function() {
 	if (controls) {
 		autoRotate = !autoRotate;
 		controls.autoRotate = autoRotate;
 	}
-}
+};
 
 init();
 </script>

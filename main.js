@@ -1,4 +1,4 @@
-var i=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var f=Object.getOwnPropertyNames;var x=Object.prototype.hasOwnProperty;var v=(n,e)=>{for(var t in e)i(n,t,{get:e[t],enumerable:!0})},h=(n,e,t,o)=>{if(e&&typeof e=="object"||typeof e=="function")for(let r of f(e))!x.call(n,r)&&r!==t&&i(n,r,{get:()=>e[r],enumerable:!(o=p(e,r))||o.enumerable});return n};var y=n=>h(i({},"__esModule",{value:!0}),n);var E={};v(E,{default:()=>a});module.exports=y(E);var m=require("obsidian");function d(n,e){return`<!DOCTYPE html>
+var a=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var f=Object.getOwnPropertyNames;var x=Object.prototype.hasOwnProperty;var h=(n,e)=>{for(var t in e)a(n,t,{get:e[t],enumerable:!0})},v=(n,e,t,o)=>{if(e&&typeof e=="object"||typeof e=="function")for(let r of f(e))!x.call(n,r)&&r!==t&&a(n,r,{get:()=>e[r],enumerable:!(o=p(e,r))||o.enumerable});return n};var y=n=>v(a({},"__esModule",{value:!0}),n);var E={};h(E,{default:()=>i});module.exports=y(E);var m=require("obsidian");function d(n,e){return`<!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -75,9 +75,19 @@ var i=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var f=Object.g
 	<button onclick="toggleAutoRotate()">Auto-Rotate</button>
 </div>
 
-<script type="text/javascript">
-// Minimal inline JSCAD modeling subset + Three.js rendering
-// This avoids heavy CDN dependencies and works offline on mobile
+<script type="importmap">
+{
+	"imports": {
+		"three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+		"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+	}
+}
+<\/script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+window.THREE = THREE;
+window.THREE.OrbitControls = OrbitControls;
 
 var statusEl = document.getElementById('status');
 var errorEl = document.getElementById('error');
@@ -89,7 +99,7 @@ function showError(msg) {
 	statusEl.style.display = 'none';
 }
 
-// Load Three.js from CDN
+// Load script from CDN
 function loadScript(url) {
 	return new Promise(function(resolve, reject) {
 		var s = document.createElement('script');
@@ -102,10 +112,6 @@ function loadScript(url) {
 
 async function init() {
 	try {
-		statusEl.textContent = 'Loading Three.js...';
-		await loadScript('https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js');
-		await loadScript('https://cdn.jsdelivr.net/npm/three@0.149.0/examples/js/controls/OrbitControls.js');
-
 		statusEl.textContent = 'Loading JSCAD...';
 		await loadScript('https://cdn.jsdelivr.net/npm/@jscad/modeling@2.12.2/dist/jscad-modeling.min.js');
 
@@ -361,27 +367,27 @@ function render3D(vertices, normals) {
 	});
 }
 
-function resetCamera() {
+window.resetCamera = function() {
 	if (controls) {
 		controls.reset();
 	}
-}
+};
 
-function toggleWireframe() {
+window.toggleWireframe = function() {
 	if (mainMesh) {
 		wireframeMode = !wireframeMode;
 		mainMesh.material.wireframe = wireframeMode;
 	}
-}
+};
 
-function toggleAutoRotate() {
+window.toggleAutoRotate = function() {
 	if (controls) {
 		autoRotate = !autoRotate;
 		controls.autoRotate = autoRotate;
 	}
-}
+};
 
 init();
 <\/script>
 </body>
-</html>`}var b=400,a=class extends m.Plugin{async onload(){this.registerMarkdownCodeBlockProcessor("jscad",(e,t,o)=>this.processJscadBlock(e,t,o)),this.registerMarkdownCodeBlockProcessor("openjscad",(e,t,o)=>this.processJscadBlock(e,t,o)),console.log("OpenJSCAD Renderer plugin loaded")}onunload(){console.log("OpenJSCAD Renderer plugin unloaded")}processJscadBlock(e,t,o){let r=b,s=e.match(/^\/\/\s*height:\s*(\d+)/);s&&(r=parseInt(s[1],10));let l=t.createDiv({cls:"jscad-render-wrapper"}),u=l.createEl("iframe",{cls:"jscad-render-iframe",attr:{sandbox:"allow-scripts",frameborder:"0",width:"100%",height:`${r}px`}}),g=d(e,r);u.srcdoc=g;let c=l.createEl("details",{cls:"jscad-source-toggle"});c.createEl("summary",{text:"View JSCAD Source"}),c.createEl("pre").createEl("code",{text:e,cls:"language-javascript"})}};
+</html>`}var b=400,i=class extends m.Plugin{async onload(){this.registerMarkdownCodeBlockProcessor("jscad",(e,t,o)=>this.processJscadBlock(e,t,o)),this.registerMarkdownCodeBlockProcessor("openjscad",(e,t,o)=>this.processJscadBlock(e,t,o)),console.log("OpenJSCAD Renderer plugin loaded")}onunload(){console.log("OpenJSCAD Renderer plugin unloaded")}processJscadBlock(e,t,o){let r=b,s=e.match(/^\/\/\s*height:\s*(\d+)/);s&&(r=parseInt(s[1],10));let l=t.createDiv({cls:"jscad-render-wrapper"}),u=l.createEl("iframe",{cls:"jscad-render-iframe",attr:{sandbox:"allow-scripts",frameborder:"0",width:"100%",height:`${r}px`}}),g=d(e,r);u.srcdoc=g;let c=l.createEl("details",{cls:"jscad-source-toggle"});c.createEl("summary",{text:"View JSCAD Source"}),c.createEl("pre").createEl("code",{text:e,cls:"language-javascript"})}};
