@@ -114,8 +114,8 @@ function loadScript(url) {
 async function init() {
 	try {
 		statusEl.textContent = 'Loading Three.js...';
-		await loadScript('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js');
-		await loadScript('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js');
+		await loadScript('https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js');
+		await loadScript('https://cdn.jsdelivr.net/npm/three@0.149.0/examples/js/controls/OrbitControls.js');
 
 		statusEl.textContent = 'Loading JSCAD...';
 		await loadScript('https://cdn.jsdelivr.net/npm/@jscad/modeling@2.12.2/dist/jscad-modeling.min.js');
