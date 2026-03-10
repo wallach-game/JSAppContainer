@@ -2,19 +2,47 @@ name: Release Obsidian Plugin
 
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - main
+      - master
+      - claude/create-new-branch-Ey8az
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: startsWith(github.event.head_commit.message, 'release v')
 
     steps:
       - uses: actions/checkout@v4
 
+      - name: Extract version from commit message
+        id: version
+        run: |
+          VERSION=$(echo "${{ github.event.head_commit.message }}" | grep -oP 'release v\K[0-9a-zA-Z._-]+')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      - name: Update manifest.json version
+        run: |
+          node -e "
+            const fs = require('fs');
+            const m = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+            m.version = '${{ steps.version.outputs.version }}';
+            fs.writeFileSync('manifest.json', JSON.stringify(m, null, '\t') + '\n');
+          "
+
+      - name: Update package.json version
+        run: |
+          node -e "
+            const fs = require('fs');
+            const p = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            p.version = '${{ steps.version.outputs.version }}';
+            fs.writeFileSync('package.json', JSON.stringify(p, null, '\t') + '\n');
+          "
 
       - name: Install dependencies
         run: npm install
@@ -22,9 +50,16 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Create tag
+        run: |
+          git tag ${{ steps.version.outputs.tag }}
+          git push origin ${{ steps.version.outputs.tag }}
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Release ${{ steps.version.outputs.tag }}
           files: |
             main.js
             manifest.json

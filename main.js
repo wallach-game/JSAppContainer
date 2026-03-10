@@ -1,4 +1,4 @@
-var i=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var f=Object.getOwnPropertyNames;var x=Object.prototype.hasOwnProperty;var v=(n,e)=>{for(var t in e)i(n,t,{get:e[t],enumerable:!0})},h=(n,e,t,o)=>{if(e&&typeof e=="object"||typeof e=="function")for(let r of f(e))!x.call(n,r)&&r!==t&&i(n,r,{get:()=>e[r],enumerable:!(o=p(e,r))||o.enumerable});return n};var y=n=>h(i({},"__esModule",{value:!0}),n);var E={};v(E,{default:()=>a});module.exports=y(E);var m=require("obsidian");function d(n,e){return`<!DOCTYPE html>
+var i=Object.defineProperty;var h=Object.getOwnPropertyDescriptor;var f=Object.getOwnPropertyNames;var g=Object.prototype.hasOwnProperty;var v=(n,e)=>{for(var t in e)i(n,t,{get:e[t],enumerable:!0})},x=(n,e,t,o)=>{if(e&&typeof e=="object"||typeof e=="function")for(let a of f(e))!g.call(n,a)&&a!==t&&i(n,a,{get:()=>e[a],enumerable:!(o=h(e,a))||o.enumerable});return n};var E=n=>x(i({},"__esModule",{value:!0}),n);var b={};v(b,{default:()=>r});module.exports=E(b);var m=require("obsidian");function d(n,e){return`<!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -76,9 +76,6 @@ var i=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var f=Object.g
 </div>
 
 <script type="text/javascript">
-// Minimal inline JSCAD modeling subset + Three.js rendering
-// This avoids heavy CDN dependencies and works offline on mobile
-
 var statusEl = document.getElementById('status');
 var errorEl = document.getElementById('error');
 var container = document.getElementById('canvas-container');
@@ -89,7 +86,6 @@ function showError(msg) {
 	statusEl.style.display = 'none';
 }
 
-// Load Three.js from CDN
 function loadScript(url) {
 	return new Promise(function(resolve, reject) {
 		var s = document.createElement('script');
@@ -100,11 +96,173 @@ function loadScript(url) {
 	});
 }
 
+// Minimal inline OrbitControls (spherical orbit, pan, zoom with mouse+touch)
+function SimpleOrbitControls(camera, domElement) {
+	this.camera = camera;
+	this.domElement = domElement;
+	this.target = new THREE.Vector3();
+	this.enableDamping = false;
+	this.dampingFactor = 0.1;
+	this.autoRotate = false;
+	this.autoRotateSpeed = 2.0;
+	this.rotateSpeed = 1.0;
+	this.zoomSpeed = 1.0;
+	this.panSpeed = 1.0;
+
+	var scope = this;
+	var spherical = new THREE.Spherical();
+	var sphericalDelta = new THREE.Spherical();
+	var panOffset = new THREE.Vector3();
+	var scale = 1;
+	var rotateStart = new THREE.Vector2();
+	var panStart = new THREE.Vector2();
+	var state = 0; // 0=none, 1=rotate, 2=zoom, 3=pan
+	var initialPosition = camera.position.clone();
+	var initialTarget = this.target.clone();
+	var lastTouchDist = 0;
+
+	function getZoomScale() { return Math.pow(0.95, scope.zoomSpeed); }
+
+	function rotateLeft(angle) { sphericalDelta.theta -= angle; }
+	function rotateUp(angle) { sphericalDelta.phi -= angle; }
+
+	function panLeft(distance) {
+		var v = new THREE.Vector3();
+		v.setFromMatrixColumn(scope.camera.matrix, 0);
+		v.multiplyScalar(-distance);
+		panOffset.add(v);
+	}
+	function panUp(distance) {
+		var v = new THREE.Vector3();
+		v.setFromMatrixColumn(scope.camera.matrix, 1);
+		v.multiplyScalar(distance);
+		panOffset.add(v);
+	}
+
+	this.update = function() {
+		var offset = new THREE.Vector3();
+		offset.copy(scope.camera.position).sub(scope.target);
+		spherical.setFromVector3(offset);
+
+		if (scope.autoRotate && state === 0) {
+			rotateLeft(2 * Math.PI / 60 / 60 * scope.autoRotateSpeed);
+		}
+
+		spherical.theta += sphericalDelta.theta * (scope.enableDamping ? scope.dampingFactor : 1);
+		spherical.phi += sphericalDelta.phi * (scope.enableDamping ? scope.dampingFactor : 1);
+		spherical.phi = Math.max(0.01, Math.min(Math.PI - 0.01, spherical.phi));
+		spherical.radius *= scale;
+		spherical.radius = Math.max(0.01, spherical.radius);
+
+		scope.target.add(panOffset);
+		offset.setFromSpherical(spherical);
+		scope.camera.position.copy(scope.target).add(offset);
+		scope.camera.lookAt(scope.target);
+
+		if (scope.enableDamping) {
+			sphericalDelta.theta *= (1 - scope.dampingFactor);
+			sphericalDelta.phi *= (1 - scope.dampingFactor);
+		} else {
+			sphericalDelta.set(0, 0, 0);
+		}
+		panOffset.set(0, 0, 0);
+		scale = 1;
+	};
+
+	this.reset = function() {
+		scope.camera.position.copy(initialPosition);
+		scope.target.copy(initialTarget);
+		scope.update();
+	};
+
+	// Mouse events
+	function onMouseDown(e) {
+		if (e.button === 0) { state = 1; rotateStart.set(e.clientX, e.clientY); }
+		else if (e.button === 2) { state = 3; panStart.set(e.clientX, e.clientY); }
+	}
+	function onMouseMove(e) {
+		if (state === 1) {
+			rotateLeft(2 * Math.PI * (e.clientX - rotateStart.x) / domElement.clientHeight * scope.rotateSpeed);
+			rotateUp(2 * Math.PI * (e.clientY - rotateStart.y) / domElement.clientHeight * scope.rotateSpeed);
+			rotateStart.set(e.clientX, e.clientY);
+		} else if (state === 3) {
+			var offset = new THREE.Vector3().copy(scope.camera.position).sub(scope.target);
+			var dist = offset.length() * Math.tan(scope.camera.fov / 2 * Math.PI / 180);
+			panLeft(2 * dist * (e.clientX - panStart.x) / domElement.clientHeight * scope.panSpeed);
+			panUp(2 * dist * (e.clientY - panStart.y) / domElement.clientHeight * scope.panSpeed);
+			panStart.set(e.clientX, e.clientY);
+		}
+	}
+	function onMouseUp() { state = 0; }
+	function onWheel(e) {
+		e.preventDefault();
+		if (e.deltaY < 0) scale /= getZoomScale();
+		else scale *= getZoomScale();
+	}
+
+	// Touch events
+	function onTouchStart(e) {
+		e.preventDefault();
+		if (e.touches.length === 1) {
+			state = 1;
+			rotateStart.set(e.touches[0].clientX, e.touches[0].clientY);
+		} else if (e.touches.length === 2) {
+			state = 2;
+			var dx = e.touches[0].clientX - e.touches[1].clientX;
+			var dy = e.touches[0].clientY - e.touches[1].clientY;
+			lastTouchDist = Math.sqrt(dx*dx + dy*dy);
+			panStart.set(
+				(e.touches[0].clientX + e.touches[1].clientX) / 2,
+				(e.touches[0].clientY + e.touches[1].clientY) / 2
+			);
+		}
+	}
+	function onTouchMove(e) {
+		e.preventDefault();
+		if (state === 1 && e.touches.length === 1) {
+			rotateLeft(2 * Math.PI * (e.touches[0].clientX - rotateStart.x) / domElement.clientHeight * scope.rotateSpeed);
+			rotateUp(2 * Math.PI * (e.touches[0].clientY - rotateStart.y) / domElement.clientHeight * scope.rotateSpeed);
+			rotateStart.set(e.touches[0].clientX, e.touches[0].clientY);
+		} else if (state === 2 && e.touches.length === 2) {
+			var dx = e.touches[0].clientX - e.touches[1].clientX;
+			var dy = e.touches[0].clientY - e.touches[1].clientY;
+			var dist = Math.sqrt(dx*dx + dy*dy);
+			if (lastTouchDist > 0) {
+				if (dist > lastTouchDist) scale /= getZoomScale();
+				else if (dist < lastTouchDist) scale *= getZoomScale();
+			}
+			lastTouchDist = dist;
+			var midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+			var midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+			var offset = new THREE.Vector3().copy(scope.camera.position).sub(scope.target);
+			var d = offset.length() * Math.tan(scope.camera.fov / 2 * Math.PI / 180);
+			panLeft(2 * d * (midX - panStart.x) / domElement.clientHeight * scope.panSpeed);
+			panUp(2 * d * (midY - panStart.y) / domElement.clientHeight * scope.panSpeed);
+			panStart.set(midX, midY);
+		}
+	}
+	function onTouchEnd(e) {
+		if (e.touches.length === 0) state = 0;
+		else if (e.touches.length === 1) {
+			state = 1;
+			rotateStart.set(e.touches[0].clientX, e.touches[0].clientY);
+		}
+	}
+
+	domElement.addEventListener('mousedown', onMouseDown);
+	document.addEventListener('mousemove', onMouseMove);
+	document.addEventListener('mouseup', onMouseUp);
+	domElement.addEventListener('wheel', onWheel, { passive: false });
+	domElement.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+	domElement.addEventListener('touchstart', onTouchStart, { passive: false });
+	domElement.addEventListener('touchmove', onTouchMove, { passive: false });
+	domElement.addEventListener('touchend', onTouchEnd);
+}
+
 async function init() {
 	try {
 		statusEl.textContent = 'Loading Three.js...';
 		await loadScript('https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js');
-		await loadScript('https://cdn.jsdelivr.net/npm/three@0.149.0/examples/js/controls/OrbitControls.js');
 
 		statusEl.textContent = 'Loading JSCAD...';
 		await loadScript('https://cdn.jsdelivr.net/npm/@jscad/modeling@2.12.2/dist/jscad-modeling.min.js');
@@ -301,7 +459,7 @@ function render3D(vertices, normals) {
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 	container.appendChild(renderer.domElement);
 
-	controls = new THREE.OrbitControls(camera, renderer.domElement);
+	controls = new SimpleOrbitControls(camera, renderer.domElement);
 	controls.target.set(cx, cy, cz);
 	controls.enableDamping = true;
 	controls.dampingFactor = 0.1;
@@ -384,4 +542,4 @@ function toggleAutoRotate() {
 init();
 <\/script>
 </body>
-</html>`}var b=400,a=class extends m.Plugin{async onload(){this.registerMarkdownCodeBlockProcessor("jscad",(e,t,o)=>this.processJscadBlock(e,t,o)),this.registerMarkdownCodeBlockProcessor("openjscad",(e,t,o)=>this.processJscadBlock(e,t,o)),console.log("OpenJSCAD Renderer plugin loaded")}onunload(){console.log("OpenJSCAD Renderer plugin unloaded")}processJscadBlock(e,t,o){let r=b,s=e.match(/^\/\/\s*height:\s*(\d+)/);s&&(r=parseInt(s[1],10));let l=t.createDiv({cls:"jscad-render-wrapper"}),u=l.createEl("iframe",{cls:"jscad-render-iframe",attr:{sandbox:"allow-scripts",frameborder:"0",width:"100%",height:`${r}px`}}),g=d(e,r);u.srcdoc=g;let c=l.createEl("details",{cls:"jscad-source-toggle"});c.createEl("summary",{text:"View JSCAD Source"}),c.createEl("pre").createEl("code",{text:e,cls:"language-javascript"})}};
+</html>`}var y=400,r=class extends m.Plugin{async onload(){this.registerMarkdownCodeBlockProcessor("jscad",(e,t,o)=>this.processJscadBlock(e,t,o)),this.registerMarkdownCodeBlockProcessor("openjscad",(e,t,o)=>this.processJscadBlock(e,t,o)),console.log("OpenJSCAD Renderer plugin loaded")}onunload(){console.log("OpenJSCAD Renderer plugin unloaded")}processJscadBlock(e,t,o){let a=y,s=e.match(/^\/\/\s*height:\s*(\d+)/);s&&(a=parseInt(s[1],10));let c=t.createDiv({cls:"jscad-render-wrapper"}),p=c.createEl("iframe",{cls:"jscad-render-iframe",attr:{sandbox:"allow-scripts",frameborder:"0",width:"100%",height:`${a}px`}}),u=d(e,a);p.srcdoc=u;let l=c.createEl("details",{cls:"jscad-source-toggle"});l.createEl("summary",{text:"View JSCAD Source"}),l.createEl("pre").createEl("code",{text:e,cls:"language-javascript"})}};
