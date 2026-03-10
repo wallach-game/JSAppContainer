@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - claude/create-new-branch-Ey8az
 
 jobs:
   build:
