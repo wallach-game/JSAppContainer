@@ -1,0 +1,19 @@
+{
+	"name": "obsidian-openjscad",
+	"version": "1.0.0",
+	"description": "Obsidian plugin to render OpenJSCAD/JSCAD 3D models in notes",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "node esbuild.config.mjs production"
+	},
+	"keywords": ["obsidian", "openjscad", "jscad", "3d"],
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^20.11.0",
+		"esbuild": "^0.19.0",
+		"obsidian": "latest",
+		"typescript": "^5.3.0",
+		"builtin-modules": "^3.3.0"
+	}
+}

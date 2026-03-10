@@ -1,0 +1,9 @@
+{
+	"id": "obsidian-openjscad",
+	"name": "OpenJSCAD Renderer",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Render OpenJSCAD/JSCAD 3D models directly in your notes. Mobile-friendly.",
+	"author": "wallach-game",
+	"isDesktopOnly": false
+}
