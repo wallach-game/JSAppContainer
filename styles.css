@@ -1,0 +1,41 @@
+.jscad-render-wrapper {
+	margin: 8px 0;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	overflow: hidden;
+	background: var(--background-secondary);
+}
+
+.jscad-render-iframe {
+	display: block;
+	border: none;
+	width: 100%;
+	min-height: 300px;
+	background: #1e1e2e;
+}
+
+.jscad-source-toggle {
+	border-top: 1px solid var(--background-modifier-border);
+	padding: 0;
+}
+
+.jscad-source-toggle summary {
+	padding: 6px 12px;
+	font-size: 12px;
+	cursor: pointer;
+	color: var(--text-muted);
+	user-select: none;
+}
+
+.jscad-source-toggle summary:hover {
+	color: var(--text-normal);
+	background: var(--background-modifier-hover);
+}
+
+.jscad-source-toggle pre {
+	margin: 0;
+	padding: 8px 12px;
+	font-size: 12px;
+	overflow-x: auto;
+	background: var(--background-primary);
+}
